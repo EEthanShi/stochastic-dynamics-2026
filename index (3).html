@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Stochastic Dynamics — NeurIPS 2026 Workshop, Sydney</title>
+<meta name="description" content="A NeurIPS 2026 workshop in Sydney bridging the mathematical foundations of stochastic dynamics and machine learning methodology.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0c1320;
+    --ink-soft:#16203a;
+    --paper:#f4efe3;
+    --paper-2:#ece5d4;
+    --text:#1c2230;
+    --text-soft:#4a4f5e;
+    --accent:#e8501f;       /* vermilion */
+    --accent-2:#0f9d8f;     /* teal */
+    --line:#d8cfba;
+    --gold:#c79a3a;
+    --serif:"Newsreader",Georgia,serif;
+    --display:"Fraunces",Georgia,serif;
+    --mono:"JetBrains Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:72px}
+  body{
+    font-family:var(--serif);
+    color:var(--text);
+    background:var(--paper);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#fff}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 32px;
+    background:rgba(12,19,32,.0);
+    transition:background .35s ease, box-shadow .35s ease;
+    mix-blend-mode:normal;
+  }
+  nav.scrolled{
+    background:rgba(244,239,227,.92);
+    backdrop-filter:blur(10px);
+    box-shadow:0 1px 0 var(--line);
+  }
+  .brand{
+    font-family:var(--mono);
+    font-size:13px;font-weight:600;letter-spacing:.04em;
+    color:#f4efe3;text-decoration:none;
+    display:flex;align-items:center;gap:9px;
+    transition:color .35s ease;
+  }
+  nav.scrolled .brand{color:var(--ink)}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(232,80,31,.22)}
+  .nav-links{display:flex;align-items:center;gap:26px}
+  .nav-links a{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;
+    text-decoration:none;color:rgba(244,239,227,.82);
+    transition:color .25s ease;
+  }
+  nav.scrolled .nav-links a{color:var(--text-soft)}
+  .nav-links a:hover{color:var(--accent)}
+  .nav-cta{
+    border:1px solid currentColor;border-radius:2px;
+    padding:7px 14px !important;color:#f4efe3 !important;
+  }
+  nav.scrolled .nav-cta{color:var(--accent) !important}
+  .nav-cta:hover{background:var(--accent);color:#fff !important;border-color:var(--accent)}
+  .nav-toggle{display:none;background:none;border:none;color:#f4efe3;font-size:22px;cursor:pointer}
+  nav.scrolled .nav-toggle{color:var(--ink)}
+
+  /* ---------- HERO ---------- */
+  header{
+    position:relative;min-height:100vh;
+    background:var(--ink);
+    display:flex;align-items:center;
+    overflow:hidden;
+  }
+  #paths{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .skyline{position:absolute;left:0;right:0;bottom:-1px;width:100%;z-index:3;pointer-events:none;line-height:0}
+  .skyline-svg{display:block;width:100%;height:auto}  .hero-veil{position:absolute;inset:0;background:
+    radial-gradient(130% 90% at 80% 35%,rgba(12,19,32,0) 0%,rgba(12,19,32,.12) 55%,rgba(12,19,32,.55) 100%),
+    linear-gradient(90deg,rgba(12,19,32,.9) 0%,rgba(12,19,32,.4) 42%,rgba(12,19,32,0) 72%);
+    pointer-events:none}
+  .hero-inner{position:relative;z-index:5;padding:0 clamp(28px,7vw,120px);max-width:1080px}
+  .kicker{
+    font-family:var(--mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent-2);margin-bottom:22px;
+    opacity:0;animation:rise .8s .1s forwards;
+  }
+  .kicker b{color:#f4efe3;font-weight:500}
+  h1{
+    font-family:var(--display);font-weight:340;
+    font-size:clamp(2.7rem,6.2vw,5.4rem);
+    line-height:1.02;letter-spacing:-.015em;
+    color:#f6f2e8;margin-bottom:8px;
+    opacity:0;animation:rise .9s .25s forwards;
+  }
+  h1 em{font-style:italic;color:var(--accent);font-weight:340}
+  .subtitle{
+    font-family:var(--display);font-style:italic;font-weight:300;
+    font-size:clamp(1.15rem,2.4vw,1.9rem);
+    color:rgba(244,239,227,.78);margin-bottom:34px;max-width:30ch;
+    opacity:0;animation:rise .9s .42s forwards;
+  }
+  .hero-meta{display:flex;flex-wrap:wrap;gap:14px;align-items:center;opacity:0;animation:rise .9s .6s forwards}
+  .chip{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;
+    padding:8px 15px;border:1px solid rgba(244,239,227,.28);border-radius:2px;
+    color:rgba(244,239,227,.9);display:flex;align-items:center;gap:8px;
+  }
+  .chip svg{width:14px;height:14px;opacity:.85}
+  .chip.live{border-color:var(--accent);color:#fff;background:rgba(232,80,31,.14)}
+  .scroll-hint{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:5;
+    font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:rgba(244,239,227,.5);display:flex;flex-direction:column;align-items:center;gap:8px;
+    animation:rise 1s 1s forwards;opacity:0;
+  }
+  .scroll-hint .bar{width:1px;height:34px;background:linear-gradient(rgba(244,239,227,.5),transparent);animation:drop 1.8s infinite}
+  @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.1%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---------- LAYOUT ---------- */
+  section{padding:clamp(70px,9vw,130px) clamp(28px,7vw,120px);position:relative}
+  .wrap{max-width:1080px;margin:0 auto}
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--accent)}
+  h2{
+    font-family:var(--display);font-weight:360;letter-spacing:-.01em;
+    font-size:clamp(2rem,4.2vw,3.2rem);line-height:1.05;color:var(--ink);margin-bottom:26px;
+  }
+  h2 em{font-style:italic;color:var(--accent)}
+  .lead{font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--text-soft);max-width:62ch;margin-bottom:18px}
+  p{margin-bottom:16px;max-width:66ch}
+  a.inline{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(232,80,31,.4)}
+  a.inline:hover{border-color:var(--accent)}
+
+  .alt{background:var(--paper-2)}
+  .dark{background:var(--ink);color:#e9e3d4}
+  .dark h2{color:#f6f2e8}
+  .dark .lead{color:rgba(233,227,212,.72)}
+  .dark p{color:rgba(233,227,212,.78)}
+
+  /* ---------- QUESTIONS Q1/Q2 ---------- */
+  .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:38px}
+  .qcard{
+    background:var(--paper);border:1px solid var(--line);border-radius:4px;
+    padding:30px 30px 32px;position:relative;overflow:hidden;
+    transition:transform .3s ease,box-shadow .3s ease;
+  }
+  .qcard:hover{transform:translateY(-4px);box-shadow:0 18px 40px -24px rgba(12,19,32,.4)}
+  .qcard .qtag{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.04em}
+  .qcard h3{font-family:var(--display);font-weight:380;font-size:1.35rem;line-height:1.25;margin:14px 0 0;color:var(--ink)}
+  .qcard .big{position:absolute;right:-10px;bottom:-34px;font-family:var(--display);font-size:8rem;font-weight:300;color:rgba(232,80,31,.06);font-style:italic;pointer-events:none}
+
+  /* ---------- TOPICS ---------- */
+  .topics{display:grid;grid-template-columns:repeat(2,1fr);gap:0;margin-top:34px;border-top:1px solid var(--line)}
+  .topic{
+    padding:20px 22px;border-bottom:1px solid var(--line);
+    display:flex;gap:16px;align-items:flex-start;
+    transition:background .25s ease;
+  }
+  .topic:nth-child(odd){border-right:1px solid var(--line)}
+  .topic:hover{background:var(--paper-2)}
+  .topic .num{font-family:var(--mono);font-size:12px;color:var(--accent);padding-top:3px;min-width:24px}
+  .topic span.t{font-size:1.02rem;color:var(--text)}
+
+  /* ---------- DATES ---------- */
+  .timeline{display:flex;flex-direction:column;gap:0;margin-top:30px}
+  .tl-row{
+    display:grid;grid-template-columns:170px 1fr;gap:30px;align-items:baseline;
+    padding:22px 0;border-bottom:1px solid rgba(233,227,212,.16);
+    position:relative;
+  }
+  .tl-row:last-child{border-bottom:none}
+  .tl-date{font-family:var(--mono);font-size:1rem;color:var(--accent);font-weight:500}
+  .tl-row.key .tl-date{color:#f6f2e8}
+  .tl-body h4{font-family:var(--display);font-weight:380;font-size:1.3rem;color:#f6f2e8;margin-bottom:4px}
+  .tl-body p{color:rgba(233,227,212,.6);font-size:.98rem;margin:0}
+  .tl-row.key{padding-left:18px}
+  .tl-row.key::before{content:"";position:absolute;left:0;top:24px;bottom:18px;width:3px;background:var(--accent);border-radius:2px}
+  .aoe-note{font-family:var(--mono);font-size:12px;color:rgba(233,227,212,.45);margin-top:26px;letter-spacing:.02em}
+
+  /* ---------- SCHEDULE ---------- */
+  .sched{margin-top:34px;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--paper)}
+  .sched-row{display:grid;grid-template-columns:150px 1fr;gap:0;border-bottom:1px solid var(--line)}
+  .sched-row:last-child{border-bottom:none}
+  .sched-row:hover{background:var(--paper-2)}
+  .sched-row.break{background:rgba(15,157,143,.06)}
+  .sched-row.head{background:var(--ink)}
+  .sched-row.head .st,.sched-row.head .se{color:#f6f2e8;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+  .st{padding:15px 20px;font-family:var(--mono);font-size:13.5px;color:var(--accent);border-right:1px solid var(--line);font-weight:500}
+  .se{padding:15px 22px;font-size:1.03rem;color:var(--text)}
+  .se .tag{font-family:var(--mono);font-size:11px;color:var(--text-soft);margin-left:8px}
+
+  /* ---------- SPEAKERS ---------- */
+  .people{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:36px}
+  .person{
+    background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:26px;
+    transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;
+  }
+  .person:hover{transform:translateY(-4px);box-shadow:0 18px 44px -26px rgba(12,19,32,.45);border-color:var(--accent)}
+  .avatar{
+    width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:var(--display);font-size:1.4rem;color:#fff;margin-bottom:18px;font-weight:400;
+    letter-spacing:-.02em;
+  }
+  .person h3{font-family:var(--display);font-weight:400;font-size:1.28rem;color:var(--ink);margin-bottom:3px;line-height:1.15}
+  .person .aff{font-family:var(--mono);font-size:11.5px;color:var(--accent);letter-spacing:.02em;margin-bottom:14px;display:block}
+  .person .status{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    padding:2px 7px;border-radius:2px;background:rgba(15,157,143,.12);color:var(--accent-2);margin-left:6px}
+  .person .status.remote{background:rgba(199,154,58,.16);color:#a8801e}
+  .person p{font-size:.95rem;color:var(--text-soft);line-height:1.55;margin:0}
+  .org-grid{grid-template-columns:repeat(3,1fr)}
+
+  /* ---------- CFP ---------- */
+  .cfp-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px}
+  .cfp-card{border:1px solid var(--line);border-radius:4px;padding:30px;background:var(--paper);position:relative}
+  .cfp-card .pages{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.04em}
+  .cfp-card h3{font-family:var(--display);font-weight:400;font-size:1.6rem;color:var(--ink);margin:8px 0 14px}
+  .cfp-card p{font-size:.98rem;color:var(--text-soft)}
+  .stat-row{display:flex;gap:0;margin-top:40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stat{flex:1;padding:26px 18px;text-align:center}
+  .stat:not(:last-child){border-right:1px solid var(--line)}
+  .stat .n{font-family:var(--display);font-size:2.4rem;font-weight:380;color:var(--accent);line-height:1}
+  .stat .l{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-soft);margin-top:8px;display:block}
+
+  /* ---------- FUNDING ---------- */
+  .funders{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px}
+  .funder{
+    border:1px solid rgba(233,227,212,.2);border-radius:4px;padding:22px 28px;
+    font-family:var(--display);font-size:1.15rem;color:#f6f2e8;display:flex;align-items:center;gap:14px;
+  }
+  .funder .ico{width:34px;height:34px;border-radius:50%;background:rgba(232,80,31,.18);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:var(--mono);font-size:13px;font-weight:600}
+
+  /* ---------- CTA ---------- */
+  .cta-box{
+    margin-top:40px;border:1px solid var(--line);border-radius:6px;
+    padding:clamp(34px,5vw,54px);background:
+      linear-gradient(135deg,var(--ink) 0%,var(--ink-soft) 100%);
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .cta-box h3{font-family:var(--display);font-weight:360;font-size:clamp(1.5rem,3vw,2.2rem);color:#f6f2e8;max-width:18ch}
+  .btn{
+    font-family:var(--mono);font-size:13px;letter-spacing:.04em;text-decoration:none;
+    padding:14px 26px;border-radius:2px;background:var(--accent);color:#fff;
+    display:inline-flex;align-items:center;gap:10px;transition:transform .25s ease,background .25s ease;
+  }
+  .btn:hover{transform:translateY(-2px);background:#ff5e2a}
+  .btn svg{width:15px;height:15px}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:#080d17;color:rgba(233,227,212,.6);padding:60px clamp(28px,7vw,120px) 40px}
+  .foot-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;border-bottom:1px solid rgba(233,227,212,.12);padding-bottom:34px}
+  .foot-brand{font-family:var(--display);font-size:1.4rem;color:#f6f2e8;max-width:24ch;font-weight:360}
+  .foot-links{display:flex;flex-wrap:wrap;gap:34px}
+  .foot-col h5{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  .foot-col a,.foot-col span{display:block;font-size:.95rem;color:rgba(233,227,212,.6);text-decoration:none;margin-bottom:8px}
+  .foot-col a:hover{color:var(--accent)}
+  .foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;padding-top:24px;font-family:var(--mono);font-size:11.5px;color:rgba(233,227,212,.4)}
+
+  /* placeholder marker */
+  .tbd{color:var(--gold);font-style:italic}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:820px){
+    .nav-links{
+      position:fixed;top:0;right:0;height:100vh;width:min(78vw,320px);
+      flex-direction:column;align-items:flex-start;justify-content:center;gap:22px;
+      background:var(--ink);padding:40px;transform:translateX(100%);transition:transform .4s ease;
+    }
+    .nav-links.open{transform:translateX(0)}
+    .nav-links a{color:rgba(244,239,227,.9) !important;font-size:15px}
+    .nav-toggle{display:block;z-index:120}
+    .qgrid,.cfp-grid,.topics{grid-template-columns:1fr}
+    .topic:nth-child(odd){border-right:none}
+    .people,.org-grid{grid-template-columns:1fr 1fr}
+    .tl-row,.sched-row{grid-template-columns:110px 1fr;gap:14px}
+    .stat-row{flex-wrap:wrap}
+    .stat{flex:1 1 40%;border-right:none !important;border-bottom:1px solid var(--line)}
+  }
+  @media(max-width:540px){
+    .people,.org-grid{grid-template-columns:1fr}
+    .st{font-size:11.5px;padding:13px}
+    .tl-row{grid-template-columns:90px 1fr}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important}
+    .kicker,h1,.subtitle,.hero-meta,.scroll-hint{opacity:1 !important}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav id="nav">
+  <a href="#home" class="brand"><span class="dot"></span>STOCHASTIC&nbsp;DYNAMICS · NeurIPS&nbsp;2026</a>
+  <button class="nav-toggle" id="navToggle" aria-label="menu">☰</button>
+  <div class="nav-links" id="navLinks">
+    <a href="#about">Overview</a>
+    <a href="#cfp">Call for Papers</a>
+    <a href="#dates">Dates</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#speakers">Speakers</a>
+    <a href="#organizers">Organizers</a>
+    <a href="#" class="nav-cta">Submit ↗</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header id="home">
+  <canvas id="paths"></canvas>
+  <div class="hero-veil"></div>
+  <div class="skyline"><svg viewBox="0 0 1440 230" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax slice" class="skyline-svg">
+<defs>
+  <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#e8923f" stop-opacity="0"/>
+    <stop offset="70%" stop-color="#c9772f" stop-opacity="0.10"/>
+    <stop offset="100%" stop-color="#e8923f" stop-opacity="0.18"/>
+  </linearGradient>
+  <radialGradient id="cityglow" cx="50%" cy="100%" r="60%">
+    <stop offset="0%" stop-color="#ffb35e" stop-opacity="0.22"/>
+    <stop offset="100%" stop-color="#ffb35e" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<rect width="1440" height="230" fill="url(#glow)"/>
+<ellipse cx="1150" cy="230" rx="320" ry="120" fill="url(#cityglow)"/>
+<g fill="#05090f" stroke="none">
+  <path d="M-20,230 L-20,207 L4,207 L9,213 L43,213 L45,210 L76,210 L80,213 L112,213 L118,214 L138,214 L140,190 L167,190 L169,211 L190,211 L196,213 L223,213 L231,209 L263,209 L266,176 L300,176 L306,180 L321,180 L327,213 L353,213 L356,181 L371,181 L379,198 L397,198 L402,182 L420,182 L422,197 L454,197 L460,210 L479,210 L485,176 L517,176 L520,210 L545,210 L551,180 L567,180 L569,203 L602,203 L607,189 L638,189 L646,187 L670,187 L676,193 L704,193 L708,166 L729,166 L732,211 L753,211 L759,183 L782,183 L787,170 L811,170 L816,178 L839,178 L841,184 L858,184 L863,168 L882,168 L886,185 L904,185 L909,174 L924,174 L926,180 L957,180 L940,230 Z"/>
+  <path d="M470,230 L470,177 L493,177 L499,200 L527,200 L534,176 L560,176 L564,189 L578,189 L582,179 L601,179 L603,215 L632,215 L635,210 L658,210 L665,193 L686,193 L691,213 L720,213 L723,193 L751,193 L757,210 L779,210 L787,183 L814,183 L818,196 L845,196 L852,204 L878,204 L881,207 L897,207 L900,176 L921,176 L924,187 L938,187 L946,207 L978,207 L980,230 Z"/>
+  <path d="M1340,230 L1340,193 L1364,193 L1371,176 L1396,176 L1401,185 L1433,185 L1435,197 L1451,197 L1456,211 L1472,211 L1460,230 Z"/>
+</g>
+<g stroke="#05090f" stroke-width="3" fill="none" stroke-linecap="round">
+  <path d="M150,176 Q310.0,96 470,176"/>
+</g>
+<g stroke="#05090f" stroke-width="1.1"><line x1="176.7" y1="163.8" x2="176.7" y2="176"/><line x1="203.3" y1="153.8" x2="203.3" y2="176"/><line x1="230.0" y1="146.0" x2="230.0" y2="176"/><line x1="256.7" y1="140.4" x2="256.7" y2="176"/><line x1="283.3" y1="137.1" x2="283.3" y2="176"/><line x1="310.0" y1="136.0" x2="310.0" y2="176"/><line x1="336.7" y1="137.1" x2="336.7" y2="176"/><line x1="363.3" y1="140.4" x2="363.3" y2="176"/><line x1="390.0" y1="146.0" x2="390.0" y2="176"/><line x1="416.7" y1="153.8" x2="416.7" y2="176"/><line x1="443.3" y1="163.8" x2="443.3" y2="176"/></g>
+<rect x="138" y="176" width="344" height="4" fill="#05090f"/>
+<rect x="136" y="154" width="14" height="26" fill="#05090f"/>
+<rect x="470" y="154" width="14" height="26" fill="#05090f"/>
+<rect x="950" y="194" width="390" height="40" fill="#05090f"/>
+<g fill="#05090f" stroke="#0c1320" stroke-width="0.6"><path d="M980.0,230 C987.9,176.1 1014.3,141.8 1024.0,132.0 C1031.5,147.7 1058.0,173.2 1058.0,230 Z"/><path d="M1018.0,230 C1027.7,162.9 1060.1,120.2 1072.0,108.0 C1080.8,127.5 1112.0,159.2 1112.0,230 Z"/><path d="M1062.0,230 C1074.2,146.4 1115.0,93.2 1130.0,78.0 C1140.1,102.3 1176.0,141.8 1176.0,230 Z"/><path d="M1176.0,230 C1179.6,156.3 1191.6,109.4 1196.0,96.0 C1203.9,117.4 1232.0,152.3 1232.0,230 Z"/><path d="M1214.0,230 C1221.6,179.4 1246.8,147.2 1256.0,138.0 C1263.0,152.7 1288.0,176.6 1288.0,230 Z"/><path d="M1264.0,230 C1270.5,186.0 1292.1,158.0 1300.0,150.0 C1305.7,162.8 1326.0,183.6 1326.0,230 Z"/></g>
+<g><rect x="533" y="203" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.69"/><rect x="872" y="219" width="1.6" height="1.6" fill="#ffcf94" opacity="0.53"/><rect x="677" y="215" width="1.6" height="1.6" fill="#ffcf94" opacity="0.60"/><rect x="218" y="220" width="1.6" height="1.6" fill="#ffcf94" opacity="0.77"/><rect x="967" y="173" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.42"/><rect x="1325" y="191" width="1.6" height="1.6" fill="#ffcf94" opacity="0.60"/><rect x="1347" y="217" width="1.6" height="1.6" fill="#ffcf94" opacity="0.42"/><rect x="713" y="184" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.62"/><rect x="902" y="186" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.82"/><rect x="827" y="199" width="1.6" height="1.6" fill="#ffcf94" opacity="0.69"/><rect x="1302" y="207" width="1.6" height="1.6" fill="#ffcf94" opacity="0.83"/><rect x="1427" y="206" width="1.6" height="1.6" fill="#ffcf94" opacity="0.75"/><rect x="470" y="199" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.68"/><rect x="127" y="213" width="1.6" height="1.6" fill="#ffcf94" opacity="0.85"/><rect x="29" y="193" width="1.6" height="1.6" fill="#ffcf94" opacity="0.84"/><rect x="64" y="203" width="1.6" height="1.6" fill="#ffcf94" opacity="0.59"/><rect x="844" y="200" width="1.6" height="1.6" fill="#ffcf94" opacity="0.65"/><rect x="1438" y="187" width="1.6" height="1.6" fill="#ffcf94" opacity="0.45"/><rect x="771" y="221" width="1.6" height="1.6" fill="#ffcf94" opacity="0.55"/><rect x="1411" y="188" width="1.6" height="1.6" fill="#ffcf94" opacity="0.88"/><rect x="663" y="198" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.83"/><rect x="1401" y="214" width="1.6" height="1.6" fill="#ffcf94" opacity="0.62"/><rect x="750" y="200" width="1.6" height="1.6" fill="#ffcf94" opacity="0.79"/><rect x="1422" y="187" width="1.6" height="1.6" fill="#ffcf94" opacity="0.71"/><rect x="910" y="173" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.57"/><rect x="508" y="220" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.75"/><rect x="87" y="207" width="1.6" height="1.6" fill="#ffcf94" opacity="0.53"/><rect x="657" y="202" width="1.6" height="1.6" fill="#ffcf94" opacity="0.49"/><rect x="267" y="211" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.53"/><rect x="720" y="205" width="1.6" height="1.6" fill="#ffcf94" opacity="0.52"/><rect x="270" y="194" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.45"/><rect x="865" y="221" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.82"/><rect x="631" y="216" width="1.6" height="1.6" fill="#ffcf94" opacity="0.44"/><rect x="818" y="185" width="1.6" height="1.6" fill="#ffcf94" opacity="0.42"/><rect x="1379" y="187" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.49"/><rect x="924" y="214" width="1.6" height="1.6" fill="#ffcf94" opacity="0.69"/><rect x="607" y="198" width="1.6" height="1.6" fill="#ffcf94" opacity="0.63"/><rect x="913" y="186" width="1.6" height="1.6" fill="#6fe3d4" opacity="0.60"/><rect x="1326" y="178" width="1.6" height="1.6" fill="#ffcf94" opacity="0.64"/></g>
+<!-- thin rim light along the very top of the opera house cluster -->
+</svg></div>
+  <div class="hero-inner">
+    <div class="kicker">A <b>NeurIPS 2026</b> Workshop &nbsp;·&nbsp; Sydney, Australia</div>
+    <h1>AI for<br>Stochastic <em>Dynamics</em></h1>
+    <p class="subtitle">From theoretical foundations to machine learning.</p>
+    <div class="hero-meta">
+      <span class="chip live">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Submissions due · Aug 29
+      </span>
+      <span class="chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Int'l Convention Centre, Sydney
+      </span>
+      <span class="chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        Dec 2026 · One-day, in-person
+      </span>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>scroll</span><span class="bar"></span></div>
+</header>
+
+<!-- ============ OVERVIEW ============ -->
+<section id="about">
+  <div class="wrap">
+    <div class="eyebrow">Overview</div>
+    <h2>Where stochastic theory<br>meets <em>learned</em> dynamics.</h2>
+    <p class="lead">Stochastic dynamics is a fundamental language for systems whose evolution is shaped by intrinsic randomness — turbulence, climate, finance, and cellular biology. Here, randomness is not noise to be removed, but an essential part of the dynamics that shapes uncertainty, long-time behavior, rare events, and regime transitions.</p>
+    <p>The same processes now sit at the heart of machine learning: diffusion and score-based generative models are built on reverse-time stochastic dynamics, neural SDEs model irregular time series, and neural operators are emerging for stochastic PDEs. Yet methods for learning stochastic dynamics still lack unified foundations, reliable algorithms, and systematic evaluation. This workshop convenes researchers across machine learning, stochastic analysis, numerical simulation, and AI for science to close that gap.</p>
+
+    <div class="qgrid">
+      <div class="qcard">
+        <span class="qtag">Question 1</span>
+        <h3>How can the mathematical foundations of stochastic dynamics guide the design, analysis, and validation of machine learning systems?</h3>
+        <span class="big">Q1</span>
+      </div>
+      <div class="qcard">
+        <span class="qtag">Question 2</span>
+        <h3>How can stochastic structure be built into models so that learned simulators stay stable, faithful, and reliable outside the training regime?</h3>
+        <span class="big">Q2</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOPICS ============ -->
+<section class="alt" id="topics">
+  <div class="wrap">
+    <div class="eyebrow">Topics of Interest</div>
+    <h2>Scope</h2>
+    <p class="lead">We focus on concrete problems at the interface of stochastic foundations and learning methodology: defining suitable learning targets, embedding stochastic structure into models and solvers, and assessing whether learned models reproduce the behavior an application requires. Topics include, but are not limited to:</p>
+    <div class="topics">
+      <div class="topic"><span class="num">i</span><span class="t">Stochastic analysis, applied probability, and stochastic control</span></div>
+      <div class="topic"><span class="num">ii</span><span class="t">SDEs, SPDEs, and random dynamical systems</span></div>
+      <div class="topic"><span class="num">iii</span><span class="t">Neural operator methods</span></div>
+      <div class="topic"><span class="num">iv</span><span class="t">Diffusion, flow-based, and score-based generative models</span></div>
+      <div class="topic"><span class="num">v</span><span class="t">Probabilistic forecasting and uncertainty quantification</span></div>
+      <div class="topic"><span class="num">vi</span><span class="t">Mathematical finance and stochastic modelling in climate</span></div>
+      <div class="topic"><span class="num">vii</span><span class="t">Applications in scientific discovery</span></div>
+      <div class="topic"><span class="num">+</span><span class="t">Learning objectives, diagnostics, and validation criteria for stochastic systems</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CALL FOR PAPERS ============ -->
+<section id="cfp">
+  <div class="wrap">
+    <div class="eyebrow">Call for Papers</div>
+    <h2>Submit your work</h2>
+    <p class="lead">All submissions are handled through <a href="#" class="inline">OpenReview ↗</a> and receive at least three reviews. We welcome two formats — page limits exclude references and appendices.</p>
+
+    <div class="cfp-grid">
+      <div class="cfp-card">
+        <span class="pages">Up to 8 pages</span>
+        <h3>Regular papers</h3>
+        <p>Mature theoretical, algorithmic, empirical, or application-oriented contributions at the interface of stochastic dynamics and machine learning.</p>
+      </div>
+      <div class="cfp-card">
+        <span class="pages">Up to 4 pages</span>
+        <h3>Short papers</h3>
+        <p>Preliminary results, focused technical observations, negative findings, position statements, or open problems relevant to the workshop themes.</p>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><span class="n">80–100</span><span class="l">Expected submissions</span></div>
+      <div class="stat"><span class="n">3+</span><span class="l">Reviews per paper</span></div>
+      <div class="stat"><span class="n">3</span><span class="l">Contributed orals</span></div>
+      <div class="stat"><span class="n">120–200</span><span class="l">Participants</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ IMPORTANT DATES ============ -->
+<section class="dark" id="dates">
+  <div class="wrap">
+    <div class="eyebrow">Important Dates</div>
+    <h2>Timeline</h2>
+    <div class="timeline">
+      <div class="tl-row key">
+        <span class="tl-date">Aug 29</span>
+        <div class="tl-body"><h4>Paper submission deadline</h4><p>Regular and short papers via OpenReview.</p></div>
+      </div>
+      <div class="tl-row">
+        <span class="tl-date">Aug 30 – Sep 18</span>
+        <div class="tl-body"><h4>Review period</h4><p>Each submission receives at least three reviews.</p></div>
+      </div>
+      <div class="tl-row">
+        <span class="tl-date">Sep 19 – 28</span>
+        <div class="tl-body"><h4>Discussion &amp; decision period</h4><p>Reviewer discussion and final decisions.</p></div>
+      </div>
+      <div class="tl-row key">
+        <span class="tl-date">Sep 29</span>
+        <div class="tl-body"><h4>Author notification</h4><p>Acceptance decisions sent to authors.</p></div>
+      </div>
+      <div class="tl-row">
+        <span class="tl-date">Oct 9</span>
+        <div class="tl-body"><h4>Camera-ready deadline</h4><p>Final versions of accepted papers.</p></div>
+      </div>
+      <div class="tl-row key">
+        <span class="tl-date tbd">Dec 2026</span>
+        <div class="tl-body"><h4>Workshop day — Sydney</h4><p>One-day in-person event during NeurIPS 2026 <span class="tbd">(exact date TBC).</span></p></div>
+      </div>
+    </div>
+    <p class="aoe-note">All deadlines are 23:59 Anywhere on Earth (AOE).</p>
+  </div>
+</section>
+
+<!-- ============ SCHEDULE ============ -->
+<section id="schedule">
+  <div class="wrap">
+    <div class="eyebrow">Program</div>
+    <h2>Schedule <em>(tentative)</em></h2>
+    <p class="lead">A one-day program balancing invited talks with contributed work, posters, and open discussion.</p>
+    <div class="sched">
+      <div class="sched-row head"><div class="st">Time</div><div class="se">Event</div></div>
+      <div class="sched-row"><div class="st">09:00–09:10</div><div class="se">Opening remarks</div></div>
+      <div class="sched-row"><div class="st">09:10–10:10</div><div class="se">Remote invited sessions</div></div>
+      <div class="sched-row break"><div class="st">10:10–10:50</div><div class="se">Poster session &amp; coffee break</div></div>
+      <div class="sched-row"><div class="st">10:50–11:35</div><div class="se">Invited Talk 1</div></div>
+      <div class="sched-row"><div class="st">11:35–12:20</div><div class="se">Invited Talk 2</div></div>
+      <div class="sched-row break"><div class="st">12:20–13:30</div><div class="se">Lunch</div></div>
+      <div class="sched-row"><div class="st">13:30–14:15</div><div class="se">Invited Talk 3</div></div>
+      <div class="sched-row"><div class="st">14:15–15:00</div><div class="se">Invited Talk 4</div></div>
+      <div class="sched-row break"><div class="st">15:00–15:50</div><div class="se">Poster session &amp; coffee break</div></div>
+      <div class="sched-row"><div class="st">15:50–16:35</div><div class="se">Contributed oral presentations</div></div>
+      <div class="sched-row"><div class="st">16:35–17:20</div><div class="se">Panel / open-problem discussion</div></div>
+      <div class="sched-row"><div class="st">17:20–17:30</div><div class="se">Awards &amp; closing remarks</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SPEAKERS ============ -->
+<section class="alt" id="speakers">
+  <div class="wrap">
+    <div class="eyebrow">Invited Speakers</div>
+    <h2>Confirmed speakers</h2>
+    <div class="people">
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#e8501f,#b53a12)">NK</div>
+        <h3>Nikola Kovachki <span class="status">Confirmed</span></h3>
+        <span class="aff">NVIDIA → NYU Courant</span>
+        <p>Senior Research Scientist at NVIDIA Research, soon Assistant Professor at NYU Courant. PhD from Caltech under Andrew Stuart. Works on operator learning, neural operators, and generative modeling for physical systems.</p>
+      </div>
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#0f9d8f,#0a6b61)">GF</div>
+        <h3>Gary Froyland <span class="status">Confirmed</span></h3>
+        <span class="aff">UNSW Sydney</span>
+        <p>Scientia Professor of Mathematics &amp; Statistics at UNSW. Works at the interface of dynamical systems, probability, operator theory, and ML — transfer-operator and ergodic methods for transport and long-time behavior.</p>
+      </div>
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#c79a3a,#8f6e1f)">HN</div>
+        <h3>Hao Ni <span class="status">Confirmed</span></h3>
+        <span class="aff">University College London</span>
+        <p>Professor of Mathematics at UCL, leading the Rough Path Theory and Machine Learning Group. Connects stochastic analysis, rough paths, and financial mathematics with principled tools for complex data streams.</p>
+      </div>
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#5566cc,#33408f)">HL</div>
+        <h3>Hong Liang <span class="status">Confirmed</span></h3>
+        <span class="aff">Shanghai Jiao Tong University</span>
+        <p class="tbd">Biography to be added.</p>
+      </div>
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#e8501f,#b53a12)">ZL</div>
+        <h3>Zongyi Li <span class="status remote">Remote</span></h3>
+        <span class="aff">MIT CSAIL → NYU Courant</span>
+        <p>Postdoctoral Associate at MIT CSAIL, soon Assistant Professor at NYU Courant. A key contributor to Fourier neural operators, with applications across fluids, weather, carbon storage, and aerodynamics.</p>
+      </div>
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#0f9d8f,#0a6b61)">AA</div>
+        <h3>Anima Anandkumar <span class="status remote">Remote</span></h3>
+        <span class="aff">Caltech</span>
+        <p>Bren Professor of Computing &amp; Mathematical Sciences at Caltech. Works on tensor methods, neural operators, and AI for scientific discovery, including scalable AI for multiscale physical systems.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ ORGANIZERS ============ -->
+<section id="organizers">
+  <div class="wrap">
+    <div class="eyebrow">Organizing Team</div>
+    <h2>Organizers</h2>
+    <div class="people org-grid">
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#1c2230,#3a4055)">DS</div>
+        <h3>Dai Shi</h3>
+        <span class="aff">University of Sydney</span>
+        <p class="tbd">Biography to be added.</p>
+      </div>
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#1c2230,#3a4055)">AH</div>
+        <h3>Andi Han</h3>
+        <span class="aff tbd">Affiliation TBC</span>
+        <p class="tbd">Biography to be added.</p>
+      </div>
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#1c2230,#3a4055)">BZ</div>
+        <h3>Bingxin Zhou</h3>
+        <span class="aff tbd">Affiliation TBC</span>
+        <p class="tbd">Biography to be added.</p>
+      </div>
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#1c2230,#3a4055)">JG</div>
+        <h3>Junbin Gao</h3>
+        <span class="aff">University of Sydney</span>
+        <p class="tbd">Biography to be added.</p>
+      </div>
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#e8501f,#b53a12)">VB</div>
+        <h3>Valentin De Bortoli</h3>
+        <span class="aff">Google DeepMind · ENS Paris</span>
+        <p>Research scientist at Google DeepMind and chargé de recherche at ENS Paris (on leave). Works at the intersection of applied probability, statistics, and ML, focusing on stochastic control, optimal transport, and generative modeling.</p>
+      </div>
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#0f9d8f,#0a6b61)">LT</div>
+        <h3>Luke Thompson</h3>
+        <span class="aff">University of Sydney</span>
+        <p>PhD student working on ML applications of rough paths in non-Euclidean settings — branched neural rough differential equations and structure-preserving schemes for neural SDEs on Lie groups.</p>
+      </div>
+
+      <div class="person">
+        <div class="avatar" style="background:linear-gradient(135deg,#c79a3a,#8f6e1f)">JH</div>
+        <h3>José Miguel Hernández-Lobato</h3>
+        <span class="aff">University of Cambridge</span>
+        <p>Professor of Machine Learning at Cambridge, Co-Director of the Cambridge ELLIS Unit and Turing Fellow. Works on probabilistic ML, deep generative models, Gaussian processes, and Bayesian optimization.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUNDING + CTA ============ -->
+<section class="dark" id="funding">
+  <div class="wrap">
+    <div class="eyebrow">Support</div>
+    <h2>Funding</h2>
+    <p class="lead">Generously sponsored by the University of Cambridge and the University of Sydney, supporting best-paper awards and community building — including a workshop dinner and a local visit at the University of Sydney for speakers, organizers, and award recipients.</p>
+    <div class="funders">
+      <div class="funder"><span class="ico">C</span> University of Cambridge</div>
+      <div class="funder"><span class="ico">S</span> University of Sydney</div>
+      <div class="funder"><span class="ico">$</span> $5,000 in awards</div>
+    </div>
+
+    <div class="cta-box">
+      <h3>Ready to contribute to the workshop?</h3>
+      <a href="#" class="btn">
+        Submit on OpenReview
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="foot-top">
+    <div class="foot-brand">AI for Stochastic Dynamics — From Theoretical Foundations to Machine Learning</div>
+    <div class="foot-links">
+      <div class="foot-col">
+        <h5>Workshop</h5>
+        <a href="#about">Overview</a>
+        <a href="#cfp">Call for Papers</a>
+        <a href="#dates">Important Dates</a>
+        <a href="#schedule">Schedule</a>
+      </div>
+      <div class="foot-col">
+        <h5>People</h5>
+        <a href="#speakers">Speakers</a>
+        <a href="#organizers">Organizers</a>
+        <a href="#funding">Funding</a>
+      </div>
+      <div class="foot-col">
+        <h5>Contact</h5>
+        <span class="tbd">contact email TBC</span>
+        <a href="https://neurips.cc/Conferences/2026" target="_blank" rel="noopener">NeurIPS 2026 ↗</a>
+        <a href="#">OpenReview ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 · A NeurIPS 2026 Workshop · Sydney, Australia</span>
+    <span>Built for the stochastic dynamics community</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- nav scroll state ---------- */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+/* ---------- mobile menu ---------- */
+const toggle=document.getElementById('navToggle'),links=document.getElementById('navLinks');
+toggle.addEventListener('click',()=>links.classList.toggle('open'));
+links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+
+/* ---------- stochastic-paths hero animation ---------- */
+(function(){
+  const canvas=document.getElementById('paths');
+  const ctx=canvas.getContext('2d');
+  let W,H,DPR,particles=[];
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const COLORS=['rgba(255,120,60,','rgba(60,225,205,','rgba(255,250,238,'];
+
+  function resize(){
+    DPR=Math.min(devicePixelRatio||1,2);
+    W=canvas.clientWidth;H=canvas.clientHeight;
+    canvas.width=W*DPR;canvas.height=H*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    ctx.fillStyle='#0c1320';ctx.fillRect(0,0,W,H);
+    init();
+  }
+  function spawn(){
+    return {
+      x:-20,
+      y:H*(0.2+Math.random()*0.6),
+      vx:0.6+Math.random()*1.1,
+      drift:(Math.random()-0.5)*0.15,
+      sigma:0.55+Math.random()*1.0,
+      c:COLORS[Math.floor(Math.random()*COLORS.length)],
+      a:0.35+Math.random()*0.45,
+      w:Math.random()<0.22?2.0:1.1
+    };
+  }
+  function init(){
+    const n=Math.round(Math.min(58,Math.max(22,W/26)));
+    particles=[];
+    for(let i=0;i<n;i++){const p=spawn();p.x=Math.random()*W;particles.push(p);}
+  }
+  function gauss(){ // Box-Muller
+    let u=0,v=0;while(u===0)u=Math.random();while(v===0)v=Math.random();
+    return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+  }
+  function frame(){
+    // gentle fade (slower) -> longer, clearer trails
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='rgba(12,19,32,0.065)';
+    ctx.fillRect(0,0,W,H);
+    // additive blending makes overlapping paths glow brightly
+    ctx.globalCompositeOperation='lighter';
+    ctx.lineCap='round';
+    for(const p of particles){
+      const px=p.x,py=p.y;
+      p.x+=p.vx;
+      p.y+=p.drift+gauss()*p.sigma;
+      // soft vertical containment
+      if(p.y<H*0.05){p.drift+=0.04}else if(p.y>H*0.95){p.drift-=0.04}else{p.drift*=0.96}
+      ctx.beginPath();
+      ctx.moveTo(px,py);
+      ctx.lineTo(p.x,p.y);
+      ctx.strokeStyle=p.c+p.a+')';
+      ctx.lineWidth=p.w;
+      ctx.stroke();
+      if(p.x>W+20){Object.assign(p,spawn());}
+    }
+    requestAnimationFrame(frame);
+  }
+  resize();addEventListener('resize',resize);
+  if(!reduce) frame();
+  else{ // static elegant render for reduced-motion
+    ctx.globalCompositeOperation='lighter';ctx.lineCap='round';
+    for(let s=0;s<260;s++){for(const p of particles){
+      const px=p.x,py=p.y;p.x+=p.vx;p.y+=p.drift+gauss()*p.sigma;
+      ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(p.x,p.y);
+      ctx.strokeStyle=p.c+p.a+')';ctx.lineWidth=p.w;ctx.stroke();
+      if(p.x>W+20)Object.assign(p,spawn());
+    }}
+  }
+})();
+</script>
+</body>
+</html>
