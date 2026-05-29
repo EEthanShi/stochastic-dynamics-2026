@@ -95,12 +95,17 @@
     /* slight darken so the photo reads as nighttime and meteors above stay legible */
     filter:brightness(0.78) saturate(0.92);
   }
-  /* On wider screens the hero is short relative to width, so the thin band crops the structures
-     into a tiny strip. Bump the band's height and re-center the focus so the Opera House and
-     bridge stay prominent. */
+  /* On wider screens the hero is short relative to width, so without help the structures
+     get squashed into a thin panoramic strip. We zoom in a bit on the photo (anchored to the
+     bottom so it doesn't push up into the chip area) and keep the band's height close to
+     mobile so the chip row stays in the clear dark zone above the photo. */
   @media (min-width:768px){
-    .skyline{height:68%}
-    .skyline-photo{object-position:center 35%}
+    .skyline{height:58%}
+    .skyline-photo{
+      transform:scale(1.32);
+      transform-origin:50% 88%;
+      object-position:center bottom;
+    }
   }  .hero-veil{position:absolute;inset:0;background:
     radial-gradient(130% 90% at 80% 35%,rgba(12,19,32,0) 0%,rgba(12,19,32,.12) 55%,rgba(12,19,32,.55) 100%),
     linear-gradient(90deg,rgba(12,19,32,.9) 0%,rgba(12,19,32,.4) 42%,rgba(12,19,32,0) 72%);
