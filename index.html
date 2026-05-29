@@ -84,32 +84,27 @@
     padding-top:clamp(90px,13vh,170px);
     overflow:hidden;
   }
-  #paths{position:absolute;inset:0;width:100%;height:100%;display:block}
-  .skyline{position:absolute;left:0;right:0;bottom:0;width:100%;height:52%;
-    z-index:3;pointer-events:none;overflow:hidden;line-height:0}
+  /* Full-bleed harbour photo behind the whole hero. object-fit:cover keeps it
+     filling the hero at ANY aspect ratio (tall mobile or wide desktop) with no
+     dead zones; object-position keeps the skyline in the lower third. */
+  .skyline{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;line-height:0}
   .skyline-photo{
-    display:block;width:100%;height:100%;object-fit:cover;object-position:center bottom;
-    /* fade in from the dark hero at the top so there's no hard seam */
-    -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,0.18) 18%,rgba(0,0,0,0.7) 42%,#000 70%);
-            mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,0.18) 18%,rgba(0,0,0,0.7) 42%,#000 70%);
-    /* slight darken so the photo reads as nighttime and meteors above stay legible */
-    filter:brightness(0.78) saturate(0.92);
+    display:block;width:100%;height:100%;object-fit:cover;
+    object-position:50% 78%;
+    filter:brightness(0.74) saturate(0.96);
   }
-  /* On wider screens the hero is short relative to width, so without help the structures
-     get squashed into a thin panoramic strip. We zoom in a bit on the photo (anchored to the
-     bottom so it doesn't push up into the chip area) and keep the band's height close to
-     mobile so the chip row stays in the clear dark zone above the photo. */
+  /* Meteors sit above the photo but are kept (in JS) to the upper sky band so
+     they never clutter the lit skyline. Additive blend makes them glow. */
+  #paths{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:3}
+  /* Dark veil over the photo: heavy at the top (so the title/nav stay crisp),
+     clearing through the middle to reveal the skyline, with a slight darken at
+     the very bottom for a clean seam into the next section. */
+  .hero-veil{position:absolute;inset:0;z-index:2;pointer-events:none;background:
+    linear-gradient(90deg,rgba(8,13,23,.7) 0%,rgba(8,13,23,.32) 45%,rgba(8,13,23,.12) 75%,rgba(8,13,23,0) 100%),
+    linear-gradient(to bottom,rgba(8,13,23,.94) 0%,rgba(8,13,23,.86) 20%,rgba(8,13,23,.5) 42%,rgba(8,13,23,.22) 60%,rgba(8,13,23,.4) 85%,rgba(8,13,23,.7) 100%)}
   @media (min-width:768px){
-    .skyline{height:58%}
-    .skyline-photo{
-      transform:scale(1.32);
-      transform-origin:50% 88%;
-      object-position:center bottom;
-    }
-  }  .hero-veil{position:absolute;inset:0;background:
-    radial-gradient(130% 90% at 80% 35%,rgba(12,19,32,0) 0%,rgba(12,19,32,.12) 55%,rgba(12,19,32,.55) 100%),
-    linear-gradient(90deg,rgba(12,19,32,.9) 0%,rgba(12,19,32,.4) 42%,rgba(12,19,32,0) 72%);
-    pointer-events:none}
+    .skyline-photo{object-position:50% 70%}
+  }
   .hero-inner{position:relative;z-index:5;padding:0 clamp(28px,7vw,120px);max-width:1080px}
   .kicker{
     font-family:var(--mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;
@@ -689,7 +684,7 @@ links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.clas
   function spawn(){
     return {
       x:Math.random()*W*0.65,
-      y:H*(0.15+Math.random()*0.7),
+      y:H*(0.05+Math.random()*0.34),
       vx:1.8+Math.random()*2.4,
       vy:(Math.random()-0.5)*1.4,
       drift:(Math.random()-0.5)*0.08,
