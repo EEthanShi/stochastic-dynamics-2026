@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI for Stochastic Dynamics — NeurIPS 2026 Workshop</title>
+  <meta name="description" content="AI for Stochastic Dynamics: From Theoretical Foundations to Scientific Applications, a NeurIPS 2026 workshop in Sydney.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #12213a;
+      --navy-2: #1b3154;
+      --blue: #365b8c;
+      --sky: #dce9f4;
+      --cream: #f7f2e8;
+      --gold: #e8a84a;
+      --coral: #dc6b4d;
+      --ink: #172033;
+      --white: #fff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: #0c1627;
+      color: var(--ink);
+      font-family: "DM Sans", Arial, sans-serif;
+    }
+
+    body { padding: 28px; }
+
+    .export-tools {
+      position: fixed;
+      z-index: 20;
+      top: 18px;
+      right: 18px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .export-tools button {
+      padding: 10px 14px;
+      border: 1px solid rgba(255, 255, 255, .25);
+      border-radius: 7px;
+      background: rgba(18, 33, 58, .92);
+      color: #fff;
+      font: 600 12px "DM Sans", Arial, sans-serif;
+      cursor: pointer;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, .22);
+    }
+
+    .export-tools button:hover { background: var(--blue); }
+
+    .poster {
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      overflow: hidden;
+      background: var(--cream);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .35);
+    }
+
+    .hero {
+      position: relative;
+      padding: 58px 64px 48px;
+      color: var(--white);
+      text-align: center;
+      background:
+        linear-gradient(135deg, rgba(11, 25, 48, .88), rgba(31, 62, 98, .72)),
+        url("assets/sydney-skyline.jpg") center 57% / cover no-repeat;
+    }
+
+    .hero::before,
+    .hero::after {
+      position: absolute;
+      content: "";
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 50%;
+    }
+
+    .hero::before { width: 320px; height: 320px; left: -170px; top: -180px; }
+    .hero::after { width: 430px; height: 430px; right: -260px; bottom: -320px; }
+
+    .conference {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 18px;
+      color: #bed4e8;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 850px;
+      margin: 0 auto;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(46px, 7vw, 76px);
+      font-weight: 600;
+      line-height: .98;
+      letter-spacing: -.03em;
+    }
+
+    h1 .accent { color: var(--gold); }
+
+    .subtitle {
+      position: relative;
+      z-index: 1;
+      margin: 18px auto 0;
+      color: #e5edf5;
+      font-family: "Newsreader", Georgia, serif;
+      font-size: clamp(20px, 3vw, 29px);
+    }
+
+    .event-line {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .pill {
+      padding: 9px 15px;
+      border: 1px solid rgba(255, 255, 255, .22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+      color: #f6f9fc;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr auto;
+      gap: 28px;
+      padding: 34px 64px;
+      background: var(--sky);
+    }
+
+    .summary p {
+      margin: 0;
+      color: #33445e;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .deadlines {
+      display: grid;
+      gap: 9px;
+      align-content: center;
+    }
+
+    .deadline {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(18, 33, 58, .16);
+      color: var(--navy);
+      font-size: 13px;
+    }
+
+    .deadline strong { color: var(--coral); white-space: nowrap; }
+
+    .website-qr {
+      display: block;
+      align-self: center;
+      color: var(--navy);
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .website-qr img {
+      display: block;
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 5px;
+      padding: 5px;
+      border-radius: 5px;
+      background: #fff;
+    }
+
+    .website-qr span {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .people-section { padding: 30px 48px 34px; }
+    .people-section.organizers { background: #e8eef4; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0 0 24px;
+      color: var(--navy);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .section-title::before,
+    .section-title::after {
+      height: 1px;
+      content: "";
+      background: rgba(18, 33, 58, .22);
+      flex: 1;
+    }
+
+    .people {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px 14px;
+    }
+
+    .organizers .people { grid-template-columns: repeat(7, 1fr); }
+
+    .person { min-width: 0; text-align: center; }
+
+    .person img {
+      display: block;
+      width: 100%;
+      max-width: 126px;
+      aspect-ratio: 1;
+      margin: 0 auto 11px;
+      border: 3px solid rgba(255, 255, 255, .85);
+      border-radius: 8px;
+      background: #c9d4df;
+      box-shadow: 0 7px 18px rgba(18, 33, 58, .15);
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .person img.hong-liang { object-position: center top; }
+
+    .person h2 {
+      margin: 0;
+      color: var(--navy);
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.12;
+    }
+
+    .person p {
+      margin: 5px 0 0;
+      color: #5a6780;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 48px;
+      background: var(--navy);
+      color: #dce7f2;
+      font-size: 12px;
+    }
+
+    footer strong { color: var(--gold); }
+
+    @media (max-width: 800px) {
+      body { padding: 0; }
+      .export-tools { top: auto; right: 12px; bottom: 12px; }
+      .hero { padding: 48px 24px 38px; }
+      .summary { grid-template-columns: 1fr; padding: 28px 26px; }
+      .people-section { padding: 28px 20px; }
+      .people, .organizers .people { grid-template-columns: repeat(3, 1fr); }
+      footer { padding: 17px 22px; flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 430px) {
+      .people, .organizers .people { grid-template-columns: repeat(2, 1fr); }
+      .deadline { flex-direction: column; gap: 2px; }
+      .person h2 { font-size: 16px; }
+    }
+
+    @media print {
+      @page { size: A4 portrait; margin: 0; }
+      html, body {
+        padding: 0;
+        background: #fff;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .export-tools { display: none; }
+      .poster { width: 210mm; min-height: 297mm; box-shadow: none; }
+      .hero { padding: 12mm 12mm 9mm; }
+      .summary { padding: 7mm 12mm; }
+      .people-section { padding: 6mm 10mm; }
+      .person img { max-width: 21mm; }
+      footer { padding: 4mm 10mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="export-tools">
+    <button type="button" id="save-png">Save PNG</button>
+    <button type="button" id="save-pdf">Save PDF</button>
+  </div>
+
+  <main class="poster">
+    <header class="hero">
+      <div class="conference">NeurIPS 2026 Workshop · Sydney, Australia</div>
+      <h1><span class="accent">AI</span> for Stochastic Dynamics</h1>
+      <p class="subtitle">From Theoretical Foundations to Scientific Applications</p>
+      <div class="event-line">
+        <span class="pill">December 11 or 12, 2026</span>
+        <span class="pill">International Convention Centre Sydney</span>
+        <span class="pill">In person · One day</span>
+      </div>
+    </header>
+
+    <section class="summary">
+      <p>
+        A one-day workshop connecting stochastic analysis, dynamical systems, scientific
+        machine learning, generative modelling, and AI for science. We bring together
+        researchers developing principled methods for learning, simulating, and controlling
+        complex stochastic systems.
+      </p>
+      <div class="deadlines">
+        <div class="deadline"><span>Paper submission deadline</span><strong>Aug 29, 2026 · AoE</strong></div>
+        <div class="deadline"><span>Accept/reject notification</span><strong>Sep 29, 2026 · AoE</strong></div>
+        <div class="deadline"><span>Camera-ready deadline</span><strong>Oct 9, 2026 · AoE</strong></div>
+      </div>
+      <a class="website-qr" href="https://eethanshi.github.io/stochastic-dynamics-2026/" target="_blank" rel="noopener">
+        <img src="assets/workshop-qr.png" alt="QR code for the workshop website">
+        <span>Scan for website</span>
+      </a>
+    </section>
+
+    <section class="people-section">
+      <h2 class="section-title">Invited Speakers</h2>
+      <div class="people">
+        <article class="person">
+          <img src="assets/people/nikola.png" alt="Nikola Kovachki">
+          <h2>Nikola Kovachki</h2>
+          <p>NVIDIA</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/gary.jpeg" alt="Gary Froyland">
+          <h2>Gary Froyland</h2>
+          <p>UNSW Sydney</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/HaoNi.jpeg" alt="Hao Ni">
+          <h2>Hao Ni</h2>
+          <p>University College London</p>
+        </article>
+        <article class="person">
+          <img class="hong-liang" src="assets/people/hongliang.png" alt="Hong Liang">
+          <h2>Hong Liang</h2>
+          <p>Shanghai Jiao Tong University</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/zongyi_Li.jpeg" alt="Zongyi Li">
+          <h2>Zongyi Li</h2>
+          <p>MIT / NYU</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/anima.jpeg" alt="Anima Anandkumar">
+          <h2>Anima Anandkumar</h2>
+          <p>Caltech</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="people-section organizers">
+      <h2 class="section-title">Organizers</h2>
+      <div class="people">
+        <article class="person">
+          <img src="assets/people/ethan.png" alt="Dai Shi">
+          <h2>Dai Shi</h2>
+          <p>University of Cambridge</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/andi.jpg" alt="Andi Han">
+          <h2>Andi Han</h2>
+          <p>University of Sydney</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/bingxin.jpg" alt="Bingxin Zhou">
+          <h2>Bingxin Zhou</h2>
+          <p>Shanghai Jiao Tong University</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/junbin.jpg" alt="Junbin Gao">
+          <h2>Junbin Gao</h2>
+          <p>University of Sydney</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/valentin.jpeg" alt="Valentin De Bortoli">
+          <h2>Valentin De Bortoli</h2>
+          <p>Google DeepMind · ENS Paris</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/luke.jpg" alt="Luke Thompson">
+          <h2>Luke Thompson</h2>
+          <p>University of Sydney</p>
+        </article>
+        <article class="person">
+          <img src="assets/people/lobato.jpg" alt="José Miguel Hernández-Lobato">
+          <h2>José Miguel Hernández-Lobato</h2>
+          <p>University of Cambridge</p>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <span><strong>AI for Stochastic Dynamics</strong> · NeurIPS 2026</span>
+      <span>Regular papers: 8 pages · Short papers: 4 pages</span>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    document.getElementById("save-pdf").addEventListener("click", () => window.print());
+
+    document.getElementById("save-png").addEventListener("click", async () => {
+      const button = document.getElementById("save-png");
+      button.disabled = true;
+      button.textContent = "Creating…";
+
+      try {
+        const canvas = await html2canvas(document.querySelector(".poster"), {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#f7f2e8"
+        });
+        const link = document.createElement("a");
+        link.download = "ai-for-stochastic-dynamics-neurips-2026.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      } finally {
+        button.disabled = false;
+        button.textContent = "Save PNG";
+      }
+    });
+  </script>
+</body>
+</html>
