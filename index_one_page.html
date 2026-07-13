@@ -107,8 +107,6 @@
       letter-spacing: -.03em;
     }
 
-    h1 .accent { color: var(--gold); }
-
     .subtitle {
       position: relative;
       z-index: 1;
@@ -263,19 +261,6 @@
       line-height: 1.25;
     }
 
-    footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 18px 48px;
-      background: var(--navy);
-      color: #dce7f2;
-      font-size: 12px;
-    }
-
-    footer strong { color: var(--gold); }
-
     @media (max-width: 800px) {
       body { padding: 0; }
       .export-tools { top: auto; right: 12px; bottom: 12px; }
@@ -283,7 +268,6 @@
       .summary { grid-template-columns: 1fr; padding: 28px 26px; }
       .people-section { padding: 28px 20px; }
       .people, .organizers .people { grid-template-columns: repeat(3, 1fr); }
-      footer { padding: 17px 22px; flex-direction: column; text-align: center; }
     }
 
     @media (max-width: 430px) {
@@ -306,7 +290,6 @@
       .summary { padding: 7mm 12mm; }
       .people-section { padding: 6mm 10mm; }
       .person img { max-width: 21mm; }
-      footer { padding: 4mm 10mm; }
     }
   </style>
 </head>
@@ -319,12 +302,11 @@
   <main class="poster">
     <header class="hero">
       <div class="conference">NeurIPS 2026 Workshop · Sydney, Australia</div>
-      <h1><span class="accent">AI</span> for Stochastic Dynamics</h1>
+      <h1>AI for Stochastic Dynamics</h1>
       <p class="subtitle">From Theoretical Foundations to Scientific Applications</p>
       <div class="event-line">
         <span class="pill">December 11 or 12, 2026</span>
         <span class="pill">International Convention Centre Sydney</span>
-        <span class="pill">In person · One day</span>
       </div>
     </header>
 
@@ -406,7 +388,7 @@
           <p>University of Sydney</p>
         </article>
         <article class="person">
-          <img src="assets/people/valentin.jpeg" alt="Valentin De Bortoli">
+          <img src="assets/people/valentin-square.jpg" alt="Valentin De Bortoli">
           <h2>Valentin De Bortoli</h2>
           <p>Google DeepMind · ENS Paris</p>
         </article>
@@ -423,10 +405,6 @@
       </div>
     </section>
 
-    <footer>
-      <span><strong>AI for Stochastic Dynamics</strong> · NeurIPS 2026</span>
-      <span>Regular papers: 8 pages · Short papers: 4 pages</span>
-    </footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
