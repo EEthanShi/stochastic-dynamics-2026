@@ -141,6 +141,15 @@
     animation:rise 1s 1s forwards;opacity:0;
   }
   .scroll-hint .bar{width:1px;height:34px;background:linear-gradient(rgba(244,239,227,.5),transparent);animation:drop 1.8s infinite}
+  .hero-contact{
+    position:absolute;right:clamp(28px,7vw,120px);bottom:28px;z-index:5;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;
+    color:rgba(244,239,227,.72);text-decoration:none;
+    padding:8px 11px;border:1px solid rgba(244,239,227,.2);border-radius:2px;
+    background:rgba(8,13,23,.25);backdrop-filter:blur(5px);
+    transition:color .25s ease,border-color .25s ease,background .25s ease;
+  }
+  .hero-contact:hover{color:#fff;border-color:var(--accent);background:rgba(232,80,31,.16)}
   @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.1%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
   @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
@@ -315,6 +324,7 @@
     .people,.org-grid{grid-template-columns:1fr}
     .st{font-size:11.5px;padding:13px}
     .tl-row{grid-template-columns:90px 1fr}
+    .hero-contact{right:28px;bottom:22px;font-size:10.5px}
   }
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important}
@@ -368,6 +378,7 @@
     </div>
   </div>
   <div class="scroll-hint"><span>scroll</span><span class="bar"></span></div>
+  <a class="hero-contact" href="mailto:stody.workshop@gmail.com">Contact · stody.workshop@gmail.com</a>
 </header>
 
 <!-- ============ OVERVIEW ============ -->
