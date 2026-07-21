@@ -134,6 +134,16 @@
   }
   .chip svg{width:14px;height:14px;opacity:.85}
   .chip.live{border-color:var(--accent);color:#fff;background:rgba(232,80,31,.14)}
+  .hero-submit{
+    display:inline-flex;align-items:center;gap:10px;margin-top:24px;
+    padding:13px 22px;border-radius:3px;background:var(--accent);color:#fff;
+    font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.03em;
+    text-decoration:none;box-shadow:0 12px 32px rgba(232,80,31,.28);
+    transition:transform .25s ease,background .25s ease,box-shadow .25s ease;
+    opacity:0;animation:rise .9s .74s forwards;
+  }
+  .hero-submit:hover{transform:translateY(-2px);background:#ff5e2a;box-shadow:0 16px 38px rgba(232,80,31,.38)}
+  .hero-submit svg{width:15px;height:15px}
   .scroll-hint{
     position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:5;
     font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
@@ -328,7 +338,7 @@
   }
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important}
-    .kicker,h1,.subtitle,.hero-meta,.scroll-hint{opacity:1 !important}
+    .kicker,h1,.subtitle,.hero-meta,.hero-submit,.scroll-hint{opacity:1 !important}
   }
 </style>
 </head>
@@ -345,7 +355,7 @@
     <a href="#schedule">Schedule</a>
     <a href="#speakers">Speakers</a>
     <a href="#organizers">Organizers</a>
-    <a href="#" class="nav-cta">Submit ↗</a>
+    <a href="https://openreview.net/group?id=NeurIPS.cc/2026/Workshop/STODY" class="nav-cta" target="_blank" rel="noopener">Submit ↗</a>
   </div>
 </nav>
 
@@ -376,6 +386,10 @@
         Dec 11 or 12, 2026 · One-day
       </span>
     </div>
+    <a class="hero-submit" href="https://openreview.net/group?id=NeurIPS.cc/2026/Workshop/STODY" target="_blank" rel="noopener">
+      Submission Site
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </a>
   </div>
   <div class="scroll-hint"><span>scroll</span><span class="bar"></span></div>
   <a class="hero-contact" href="mailto:stody.workshop@gmail.com">Contact · stody.workshop@gmail.com</a>
@@ -427,7 +441,7 @@
   <div class="wrap">
     <div class="eyebrow">Call for Papers</div>
     <h2>Submit your work</h2>
-    <p class="lead">All submissions are handled through <a href="#" class="inline">OpenReview ↗</a> and receive at least three reviews. We welcome two formats — page limits exclude references and appendices.</p>
+    <p class="lead">All submissions are handled through <a href="https://openreview.net/group?id=NeurIPS.cc/2026/Workshop/STODY" class="inline" target="_blank" rel="noopener">OpenReview ↗</a> and receive at least three reviews. We welcome two formats — page limits exclude references and appendices.</p>
 
     <div class="cfp-grid">
       <div class="cfp-card">
@@ -642,7 +656,7 @@
 
     <div class="cta-box">
       <h3>Ready to contribute to the workshop?</h3>
-      <a href="#" class="btn">
+      <a href="https://openreview.net/group?id=NeurIPS.cc/2026/Workshop/STODY" class="btn" target="_blank" rel="noopener">
         Submit on OpenReview
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
       </a>
@@ -672,7 +686,7 @@
         <h5>Contact</h5>
         <a href="mailto:stody.workshop@gmail.com">stody.workshop@gmail.com</a>
         <a href="https://neurips.cc/Conferences/2026" target="_blank" rel="noopener">NeurIPS 2026 ↗</a>
-        <a href="#">OpenReview ↗</a>
+        <a href="https://openreview.net/group?id=NeurIPS.cc/2026/Workshop/STODY" target="_blank" rel="noopener">OpenReview ↗</a>
       </div>
     </div>
   </div>
