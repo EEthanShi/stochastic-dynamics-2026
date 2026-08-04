@@ -288,6 +288,12 @@
     font-family:var(--display);font-size:1.15rem;color:#f6f2e8;display:flex;align-items:center;gap:14px;
   }
   .funder .ico{width:34px;height:34px;border-radius:50%;background:rgba(232,80,31,.18);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:var(--mono);font-size:13px;font-weight:600}
+  .funder.logo-card{
+    flex:1 1 280px;min-height:125px;justify-content:center;
+    padding:18px 24px;background:#fff;border-color:rgba(255,255,255,.78);
+  }
+  .funder.logo-card img{display:block;width:100%;height:82px;object-fit:contain}
+  .funder.funding-total{flex:1 1 100%;justify-content:center}
 
   /* ---------- CTA ---------- */
   .cta-box{
@@ -649,11 +655,12 @@
   <div class="wrap">
     <div class="eyebrow">Support</div>
     <h2>Funding</h2>
-    <p class="lead">Generously sponsored by the University of Cambridge and the University of Sydney, supporting best-paper awards and community building — including a workshop dinner and a local visit to School of Business Analytics and Marketing at the University of Sydney for speakers, organizers, and award recipients.</p>
+    <p class="lead">Generously supported by the University of Cambridge, the AI Hub in Generative Models, and the University of Sydney, supporting best-paper awards and community building — including a workshop dinner and a local visit to School of Business Analytics and Marketing at the University of Sydney for speakers, organizers, and award recipients.</p>
     <div class="funders">
-      <div class="funder"><span class="ico">C</span> University of Cambridge</div>
-      <div class="funder"><span class="ico">S</span> University of Sydney</div>
-      <div class="funder"><span class="ico">$</span> Approx. $7,000 in funding</div>
+      <div class="funder logo-card"><img src="assets/cambridge.png" alt="University of Cambridge"></div>
+      <div class="funder logo-card"><img src="assets/Logo_blue_final_white_background.png" alt="The AI Hub in Generative Models"></div>
+      <div class="funder logo-card"><img src="assets/usyd.png" alt="The University of Sydney"></div>
+      <div class="funder funding-total"><span class="ico">$</span> Approx. $7,000 in funding</div>
     </div>
 
     <div class="cta-box">
