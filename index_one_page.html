@@ -268,7 +268,7 @@
 
     .person { min-width: 0; text-align: center; }
 
-    .person img {
+    .person .portrait {
       display: block;
       width: 100%;
       max-width: 126px;
@@ -278,11 +278,12 @@
       border-radius: 8px;
       background: #c9d4df;
       box-shadow: 0 7px 18px rgba(18, 33, 58, .15);
-      object-fit: cover;
-      object-position: center;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
     }
 
-    .person img.hong-liang { object-position: center top; }
+    .person .portrait.hong-liang { background-position: center top; }
 
     .person h2 {
       margin: 0;
@@ -334,7 +335,7 @@
       .summary { padding: 7mm 12mm; }
       .topics { padding: 5mm 10mm; }
       .people-section { padding: 6mm 10mm; }
-      .person img { max-width: 21mm; }
+      .person .portrait { max-width: 21mm; }
     }
   </style>
 </head>
@@ -393,32 +394,32 @@
       <h2 class="section-title">Invited Speakers</h2>
       <div class="people">
         <article class="person">
-          <img src="assets/people/nikola.png" alt="Nikola Kovachki">
+          <div class="portrait" role="img" aria-label="Nikola Kovachki" style="background-image:url('assets/people/nikola.png')"></div>
           <h2>Nikola Kovachki</h2>
           <p>NVIDIA</p>
         </article>
         <article class="person">
-          <img src="assets/people/gary.jpeg" alt="Gary Froyland">
+          <div class="portrait" role="img" aria-label="Gary Froyland" style="background-image:url('assets/people/gary.jpeg')"></div>
           <h2>Gary Froyland</h2>
           <p>UNSW Sydney</p>
         </article>
         <article class="person">
-          <img src="assets/people/HaoNi.jpeg" alt="Hao Ni">
+          <div class="portrait" role="img" aria-label="Hao Ni" style="background-image:url('assets/people/HaoNi.jpeg')"></div>
           <h2>Hao Ni</h2>
           <p>University College London</p>
         </article>
         <article class="person">
-          <img class="hong-liang" src="assets/people/hongliang.png" alt="Liang Hong">
+          <div class="portrait hong-liang" role="img" aria-label="Liang Hong" style="background-image:url('assets/people/hongliang.png')"></div>
           <h2>Liang Hong</h2>
           <p>Shanghai Jiao Tong University</p>
         </article>
         <article class="person">
-          <img src="assets/people/zongyi_Li.jpeg" alt="Zongyi Li">
+          <div class="portrait" role="img" aria-label="Zongyi Li" style="background-image:url('assets/people/zongyi_Li.jpeg')"></div>
           <h2>Zongyi Li</h2>
           <p>MIT / NYU</p>
         </article>
         <article class="person">
-          <img src="assets/people/anima.jpeg" alt="Anima Anandkumar">
+          <div class="portrait" role="img" aria-label="Anima Anandkumar" style="background-image:url('assets/people/anima.jpeg')"></div>
           <h2>Anima Anandkumar</h2>
           <p>Caltech</p>
         </article>
@@ -429,37 +430,37 @@
       <h2 class="section-title">Organizers</h2>
       <div class="people">
         <article class="person">
-          <img src="assets/people/ethan.png" alt="Dai Shi">
+          <div class="portrait" role="img" aria-label="Dai Shi" style="background-image:url('assets/people/ethan.png')"></div>
           <h2>Dai Shi</h2>
           <p>University of Cambridge</p>
         </article>
         <article class="person">
-          <img src="assets/people/andi.jpg" alt="Andi Han">
+          <div class="portrait" role="img" aria-label="Andi Han" style="background-image:url('assets/people/andi.jpg')"></div>
           <h2>Andi Han</h2>
           <p>University of Sydney</p>
         </article>
         <article class="person">
-          <img src="assets/people/bingxin.jpg" alt="Bingxin Zhou">
+          <div class="portrait" role="img" aria-label="Bingxin Zhou" style="background-image:url('assets/people/bingxin.jpg')"></div>
           <h2>Bingxin Zhou</h2>
           <p>Shanghai Jiao Tong University</p>
         </article>
         <article class="person">
-          <img src="assets/people/junbin.jpg" alt="Junbin Gao">
+          <div class="portrait" role="img" aria-label="Junbin Gao" style="background-image:url('assets/people/junbin.jpg')"></div>
           <h2>Junbin Gao</h2>
           <p>University of Sydney</p>
         </article>
         <article class="person">
-          <img src="assets/people/valentin-square.jpg?v=3" alt="Valentin De Bortoli">
+          <div class="portrait" role="img" aria-label="Valentin De Bortoli" style="background-image:url('assets/people/valentin-square.jpg')"></div>
           <h2>Valentin De Bortoli</h2>
           <p>Google DeepMind · ENS Paris</p>
         </article>
         <article class="person">
-          <img src="assets/people/luke.jpg" alt="Luke Thompson">
+          <div class="portrait" role="img" aria-label="Luke Thompson" style="background-image:url('assets/people/luke.jpg')"></div>
           <h2>Luke Thompson</h2>
           <p>University of Sydney</p>
         </article>
         <article class="person">
-          <img src="assets/people/lobato.jpg" alt="José Miguel Hernández-Lobato">
+          <div class="portrait" role="img" aria-label="José Miguel Hernández-Lobato" style="background-image:url('assets/people/lobato.jpg')"></div>
           <h2>José Miguel Hernández-Lobato</h2>
           <p>University of Cambridge</p>
         </article>
