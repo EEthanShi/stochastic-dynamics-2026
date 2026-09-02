@@ -168,6 +168,14 @@
     }
 
     .deadline strong { color: var(--coral); white-space: nowrap; }
+    .deadline a {
+      color: var(--coral);
+      font-weight: 700;
+      text-align: right;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+    .deadline a:hover { text-decoration: underline; }
 
     .website-qr {
       display: block;
@@ -308,6 +316,7 @@
       .people, .organizers .people { grid-template-columns: repeat(2, 1fr); }
       .topic-list li { flex-basis: 100%; }
       .deadline { flex-direction: column; gap: 2px; }
+      .deadline a { text-align: left; }
       .person h2 { font-size: 16px; }
     }
 
@@ -354,9 +363,11 @@
         complex stochastic systems.
       </p>
       <div class="deadlines">
-        <div class="deadline"><span>Paper submission deadline</span><strong>Aug 29, 2026 · AoE</strong></div>
+        <div class="deadline"><span>Paper submission deadline</span><strong>Sep 5, 2026 · AoE</strong></div>
         <div class="deadline"><span>Decision notification</span><strong>Sep 29, 2026 · AoE</strong></div>
         <div class="deadline"><span>Camera-ready deadline</span><strong>Oct 9, 2026 · AoE</strong></div>
+        <div class="deadline"><span>Funding support</span><strong>Approx. $7,000</strong></div>
+        <div class="deadline"><span>Contact</span><a href="mailto:stody.workshop@gmail.com">stody.workshop@gmail.com</a></div>
       </div>
       <a class="website-qr" href="https://eethanshi.github.io/stochastic-dynamics-2026/" target="_blank" rel="noopener">
         <img src="assets/workshop-qr.png" alt="QR code for the workshop website">
